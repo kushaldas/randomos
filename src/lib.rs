@@ -69,6 +69,7 @@ impl Rpath {
         let path = Path::new(p);
         Ok(path.exists())
     }
+
     pub fn is_dir(&mut self) -> PyResult<bool> {
         let p = &self.original_path.as_str();
         let path = Path::new(p);
