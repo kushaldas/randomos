@@ -9,10 +9,17 @@ fn hello(name: String) -> PyResult<String> {
     Ok(answer)
 }
 
-/// A Python module implemented in Rust.
+/// Adds two numbers and returns the result
+#[pyfunction]
+#[text_signature = "(a, b)"]
+fn add_numbers(a: i64, b: i64) -> PyResult<i64> {
+    Ok(a + b)
+}
+
+/// A Python module implemented in Rust with random OS things.
 #[pymodule]
 fn randomos(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(hello, m)?)?;
-
+    m.add_function(wrap_pyfunction!(add_numbers, m)?)?;
     Ok(())
 }
