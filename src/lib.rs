@@ -21,5 +21,6 @@ fn add_numbers(a: i64, b: i64) -> PyResult<i64> {
 fn randomos(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(hello, m)?)?;
     m.add_function(wrap_pyfunction!(add_numbers, m)?)?;
+
     Ok(())
 }
