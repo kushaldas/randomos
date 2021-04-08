@@ -26,7 +26,7 @@ fn read_file(py: Python, filename: String) -> PyResult<PyObject> {
     let mut file = File::open(filename).expect("no file found");
     let mut result = Vec::new();
     file.read_to_end(&mut result).unwrap();
-    let res = PyBytes::new(py, &result);
+    let res = PyBytes::new_bound(py, &result);
     Ok(res.into())
 }
 
