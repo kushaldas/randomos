@@ -75,6 +75,7 @@ impl Rpath {
         let path = Path::new(p);
         Ok(path.is_dir())
     }
+
     pub fn parent(&mut self) -> PyResult<String> {
         let p = &self.original_path.as_str();
         let path = Path::new(p);
