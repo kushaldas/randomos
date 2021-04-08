@@ -1,8 +1,13 @@
+use pyo3::create_exception;
+use pyo3::exceptions::*;
 use pyo3::prelude::*;
 use pyo3::types::PyBytes;
 use pyo3::wrap_pyfunction;
 use std::fs::File;
 use std::io::Read;
+
+// Exception when you try to add small numbers
+create_exception!(randomos, SmallNumberError, PyException);
 
 /// Says hello to the name given. Returns a string.
 #[pyfunction]
@@ -16,6 +21,12 @@ fn hello(name: String) -> PyResult<String> {
 #[pyfunction]
 #[pyo3(text_signature = "(a, b)")]
 fn add_numbers(a: i64, b: i64) -> PyResult<i64> {
+    if a < 10 {
+        return Err(SmallNumberError::new_err(format!(
+            "Too small number: {}, think big.",
+            a
+        )));
+    }
     Ok(a + b)
 }
 
