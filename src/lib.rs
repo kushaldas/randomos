@@ -112,6 +112,7 @@ impl Ros {
         }
     }
 }
+
 /// A Python module implemented in Rust with random OS things.
 #[pymodule]
 fn randomos(_py: Python, m: &PyModule) -> PyResult<()> {
