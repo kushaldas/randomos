@@ -4,7 +4,6 @@ use pyo3::prelude::*;
 use pyo3::types::PyBytes;
 use pyo3::wrap_pyfunction;
 use std::collections::HashMap;
-use std::collections::HashMap;
 use std::fs::File;
 use std::io::Read;
 // Exception when you try to add small numbers
