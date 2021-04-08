@@ -9,6 +9,7 @@ use std::fs::File;
 use std::io::Read;
 use std::path::Path;
 use sysinfo::{CpuExt, NetworkExt, NetworksExt, ProcessExt, System, SystemExt};
+
 // Exception when you try to add small numbers
 create_exception!(randomos, SmallNumberError, PyException);
 create_exception!(randomos, CPUError, PyException);
