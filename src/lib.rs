@@ -70,14 +70,18 @@ impl Rpath {
         let path = Path::new(p);
         Ok(path.is_dir())
     }
-    //pub fn is_file(&mut self) -> PyResult<bool> {
-    //}
     pub fn parent(&mut self) -> PyResult<String> {
         let p = &self.original_path.as_str();
         let path = Path::new(p);
         let parent = path.parent().unwrap();
         let ppath = parent.to_str().unwrap().to_string();
         return Ok(ppath);
+    }
+
+    pub fn is_file(&mut self) -> PyResult<bool> {
+        let p = &self.original_path.as_str();
+        let path = Path::new(p);
+        Ok(path.is_file())
     }
 }
 
