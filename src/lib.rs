@@ -3,17 +3,20 @@ use pyo3::exceptions::*;
 use pyo3::prelude::*;
 use pyo3::types::PyBytes;
 use pyo3::wrap_pyfunction;
+use std::collections::HashMap;
 use std::fs::File;
 use std::io::Read;
-
 // Exception when you try to add small numbers
 create_exception!(randomos, SmallNumberError, PyException);
 
-/// Says hello to the name given. Returns a string.
+/// Says hello to the name given and welcome to the city. Returns a string.
+/// Takes a dictrionary as argument.
 #[pyfunction]
-#[pyo3(text_signature = "(name)")]
-fn hello(name: String) -> PyResult<String> {
-    let answer = format!("Hello {}", name);
+#[pyo3(text_signature = "(data)")]
+fn hello(data: HashMap<String, String>) -> PyResult<String> {
+    let name = data.get("name").unwrap();
+    let city = data.get("city").unwrap();
+    let answer = format!("Hello {}, welcome to {}", name, city);
     Ok(answer)
 }
 
