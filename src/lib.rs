@@ -6,6 +6,8 @@ use pyo3::wrap_pyfunction;
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::Read;
+use std::path::Path;
+
 // Exception when you try to add small numbers
 create_exception!(randomos, SmallNumberError, PyException);
 
@@ -56,6 +58,12 @@ impl Rpath {
     #[new]
     fn new(original_path: String) -> Self {
         Rpath { original_path }
+    }
+
+    pub fn exists(&mut self) -> PyResult<bool> {
+        let p = &self.original_path.as_str();
+        let path = Path::new(p);
+        Ok(path.exists())
     }
 }
 
