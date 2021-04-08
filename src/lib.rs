@@ -47,6 +47,7 @@ fn randomos(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(hello, m)?)?;
     m.add_function(wrap_pyfunction!(add_numbers, m)?)?;
     m.add_function(wrap_pyfunction!(read_file, m)?)?;
+    m.add("SmallNumberError", _py.get_type::<SmallNumberError>())?;
 
     Ok(())
 }
