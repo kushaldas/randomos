@@ -2,8 +2,9 @@ use pyo3::prelude::*;
 use pyo3::wrap_pyfunction;
 
 #[pyfunction]
-fn hello() {
-    println!("Hello World!");
+fn hello(name: String) -> PyResult<String>{
+    let answer = format!("Hello {}", name);
+    Ok(answer)
 }
 
 /// A Python module implemented in Rust.
