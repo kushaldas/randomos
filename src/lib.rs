@@ -2,13 +2,15 @@
 use pyo3::create_exception;
 use pyo3::exceptions::*;
 use pyo3::prelude::*;
-use pyo3::types::PyBytes;
+use pyo3::types::{PyBytes, PyDict, PyList};
 use pyo3::wrap_pyfunction;
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
+use sysinfo::PidExt;
 use sysinfo::{CpuExt, NetworkExt, NetworksExt, ProcessExt, System, SystemExt};
+
 // Exception when you try to add small numbers
 create_exception!(randomos, SmallNumberError, PyException);
 create_exception!(randomos, CPUError, PyException);
@@ -68,11 +70,13 @@ impl Rpath {
         let path = Path::new(p);
         Ok(path.exists())
     }
+
     pub fn is_dir(&mut self) -> PyResult<bool> {
         let p = &self.original_path.as_str();
         let path = Path::new(p);
         Ok(path.is_dir())
     }
+
     pub fn parent(&mut self) -> PyResult<String> {
         let p = &self.original_path.as_str();
         let path = Path::new(p);
@@ -109,6 +113,17 @@ impl Ros {
             }
             None => return Err(CPUError::new_err("")),
         }
+    }
+
+    fn get_all_processes(&mut self, py: Python) -> PyResult<PyObject> {
+        let plist = PyList::empty(py);
+        for (pid, process) in self.sys.processes() {
+            let pd = PyDict::new(py);
+            pd.set_item("pid", pid.as_u32()).unwrap();
+            pd.set_item("name", process.name()).unwrap();
+            plist.append(pd).unwrap();
+        }
+        Ok(plist.into())
     }
 }
 
