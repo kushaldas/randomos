@@ -10,7 +10,6 @@ use std::io::Read;
 use std::path::Path;
 use sysinfo::PidExt;
 use sysinfo::{CpuExt, NetworkExt, NetworksExt, ProcessExt, System, SystemExt};
-
 // Exception when you try to add small numbers
 create_exception!(randomos, SmallNumberError, PyException);
 create_exception!(randomos, CPUError, PyException);
@@ -124,6 +123,18 @@ impl Ros {
             plist.append(pd).unwrap();
         }
         Ok(plist.into())
+    }
+
+    fn __repr__(&self) -> PyResult<String> {
+        let cpus = self.sys.cpus().len();
+        let repr = format!("<Ros(CPUS: {})>", cpus);
+        Ok(repr)
+    }
+
+    fn __str__(&self) -> PyResult<String> {
+        let cpus = self.sys.cpus().len();
+        let repr = format!("<Ros(CPUS: {})>", cpus);
+        Ok(repr)
     }
 }
 
