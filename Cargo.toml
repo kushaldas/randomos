@@ -17,6 +17,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 pyo3 = "0.18.3"
+sysinfo = "0.17.0"
 
 [features]
 default = ["pyo3/extension-module"]
