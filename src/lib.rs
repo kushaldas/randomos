@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 use pyo3::create_exception;
 use pyo3::exceptions::*;
 use pyo3::prelude::*;
@@ -7,7 +8,7 @@ use std::collections::HashMap;
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
-
+use sysinfo::{NetworkExt, NetworksExt, ProcessExt, System, SystemExt};
 // Exception when you try to add small numbers
 create_exception!(randomos, SmallNumberError, PyException);
 
@@ -85,6 +86,24 @@ impl Rpath {
     }
 }
 
+///Class Ros for os related methods
+#[pyclass]
+struct Ros {
+    sys: sysinfo::System,
+}
+
+#[pymethods]
+impl Ros {
+    #[new]
+    fn new() -> Self {
+        let sys = System::new_all();
+        Ros { sys }
+    }
+
+    fn number_of_processors(&mut self) -> PyResult<usize> {
+        Ok(self.sys.get_processors().len())
+    }
+}
 /// A Python module implemented in Rust with random OS things.
 #[pymodule]
 fn randomos(_py: Python, m: &PyModule) -> PyResult<()> {
@@ -93,6 +112,7 @@ fn randomos(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(read_file, m)?)?;
     m.add("SmallNumberError", _py.get_type::<SmallNumberError>())?;
     m.add_class::<Rpath>()?;
+    m.add_class::<Ros>()?;
 
     Ok(())
 }
