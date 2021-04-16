@@ -3,17 +3,20 @@ use pyo3::exceptions::*;
 use pyo3::prelude::*;
 use pyo3::types::PyBytes;
 use pyo3::wrap_pyfunction;
+use std::collections::HashMap;
 use std::fs::File;
 use std::io::Read;
-
 // Exception when you try to add small numbers
 create_exception!(randomos, SmallNumberError, PyException);
 
-/// Says hello to the name given. Returns a string.
+/// Says hello to the name given and welcome to the city. Returns a string.
+/// Takes a dictrionary as argument.
 #[pyfunction]
-#[pyo3(text_signature = "(name)")]
-fn hello(name: String) -> PyResult<String> {
-    let answer = format!("Hello {}", name);
+#[pyo3(text_signature = "(data)")]
+fn hello(data: HashMap<String, String>) -> PyResult<String> {
+    let name = data.get("name").unwrap();
+    let city = data.get("city").unwrap();
+    let answer = format!("Hello {}, welcome to {}", name, city);
     Ok(answer)
 }
 
@@ -43,11 +46,11 @@ fn read_file(py: Python, filename: String) -> PyResult<PyObject> {
 
 /// A Python module implemented in Rust with random OS things.
 #[pymodule]
-fn randomos(m: &Bound<'_, PyModule>) -> PyResult<()> {
+fn randomos(py: Python<'_>, m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(hello, m)?)?;
     m.add_function(wrap_pyfunction!(add_numbers, m)?)?;
     m.add_function(wrap_pyfunction!(read_file, m)?)?;
-    m.add("SmallNumberError", _py.get_type::<SmallNumberError>())?;
+    m.add("SmallNumberError", py.get_type_bound::<SmallNumberError>())?;
 
     Ok(())
 }
