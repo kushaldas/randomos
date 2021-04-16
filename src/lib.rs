@@ -2,7 +2,7 @@
 use pyo3::create_exception;
 use pyo3::exceptions::*;
 use pyo3::prelude::*;
-use pyo3::types::PyBytes;
+use pyo3::types::{PyBytes, PyDict, PyList};
 use pyo3::wrap_pyfunction;
 use std::collections::HashMap;
 use std::fs::File;
@@ -112,6 +112,17 @@ impl Ros {
             }
             None => return Err(CPUError::new_err("")),
         }
+    }
+
+    fn get_all_processes(&mut self, py: Python) -> PyResult<PyObject> {
+        let plist = PyList::empty(py);
+        for (pid, process) in self.sys.get_processes() {
+            let pd = PyDict::new(py);
+            pd.set_item("pid", pid).unwrap();
+            pd.set_item("name", process.name()).unwrap();
+            plist.append(pd).unwrap();
+        }
+        Ok(plist.into())
     }
 }
 
