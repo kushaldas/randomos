@@ -21,7 +21,7 @@ fn add_numbers(a: i64, b: i64) -> PyResult<i64> {
 
 /// Reads a file as Python Bytes
 #[pyfunction]
-#[text_signature = "(filename)"]
+#[pyo3(text_signature = "(filename)")]
 fn read_file(py: Python, filename: String) -> PyResult<PyObject> {
     let mut file = File::open(filename).expect("no file found");
     let mut result = Vec::new();
