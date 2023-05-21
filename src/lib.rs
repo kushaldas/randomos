@@ -11,7 +11,7 @@ fn hello(name: String) -> PyResult<String> {
 
 /// Adds two numbers and returns the result
 #[pyfunction]
-#[text_signature = "(a, b)"]
+#[pyo3(text_signature = "(a, b)")]
 fn add_numbers(a: i64, b: i64) -> PyResult<i64> {
     Ok(a + b)
 }
