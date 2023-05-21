@@ -46,6 +46,7 @@ fn read_file(py: Python, filename: String) -> PyResult<PyObject> {
 }
 
 ///Class Rpath for path related methods
+#[allow(dead_code)]
 #[pyclass]
 struct Rpath {
     original_path: String,
@@ -58,7 +59,6 @@ impl Rpath {
         Rpath { original_path }
     }
 }
-
 
 /// A Python module implemented in Rust with random OS things.
 #[pymodule]
