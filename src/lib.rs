@@ -3,7 +3,7 @@ use pyo3::wrap_pyfunction;
 
 /// Says hello to the name given. Returns a string.
 #[pyfunction]
-#[text_signature = "(name)"]
+#[pyo3(text_signature = "(name)")]
 fn hello(name: String) -> PyResult<String> {
     let answer = format!("Hello {}", name);
     Ok(answer)
