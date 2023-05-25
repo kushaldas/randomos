@@ -1,9 +1,9 @@
 #![allow(unused_imports)]
+use pyo3::create_exception;
 use pyo3::exceptions::*;
 use pyo3::prelude::*;
 use pyo3::types::{PyBytes, PyDict, PyList};
 use pyo3::wrap_pyfunction;
-use pyo3::{create_exception, PyObjectProtocol};
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::Read;
@@ -136,10 +136,6 @@ impl Ros {
         }
         Ok(plist.into())
     }
-}
-
-#[pyproto]
-impl PyObjectProtocol for Ros {
     fn __repr__(&self) -> PyResult<String> {
         let cpus = self.sys.get_processors().len();
         let repr = format!("<Ros(CPUS: {})>", cpus);
