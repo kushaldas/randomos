@@ -16,8 +16,8 @@ name = "randomos"
 crate-type = ["cdylib"]
 
 [dependencies]
-pyo3 = "0.18.3"
-sysinfo = "0.17.0"
+pyo3 = "0.20.0"
+sysinfo = "0.29.10"
 
 [features]
 default = ["pyo3/extension-module"]
