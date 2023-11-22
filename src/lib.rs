@@ -126,24 +126,14 @@ impl Ros {
         Ok(plist.into())
     }
 
-    fn get_all_processes(&mut self, py: Python) -> PyResult<PyObject> {
-        let plist = PyList::empty(py);
-        for (pid, process) in self.sys.get_processes() {
-            let pd = PyDict::new(py);
-            pd.set_item("pid", pid).unwrap();
-            pd.set_item("name", process.name()).unwrap();
-            plist.append(pd).unwrap();
-        }
-        Ok(plist.into())
-    }
     fn __repr__(&self) -> PyResult<String> {
-        let cpus = self.sys.get_processors().len();
+        let cpus = self.sys.cpus().len();
         let repr = format!("<Ros(CPUS: {})>", cpus);
         Ok(repr)
     }
 
     fn __str__(&self) -> PyResult<String> {
-        let cpus = self.sys.get_processors().len();
+        let cpus = self.sys.cpus().len();
         let repr = format!("<Ros(CPUS: {})>", cpus);
         Ok(repr)
     }
