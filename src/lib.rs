@@ -8,6 +8,7 @@ use std::collections::HashMap;
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
+use sysinfo::PidExt;
 use sysinfo::{CpuExt, NetworkExt, NetworksExt, ProcessExt, System, SystemExt};
 
 // Exception when you try to add small numbers
@@ -116,9 +117,9 @@ impl Ros {
 
     fn get_all_processes(&mut self, py: Python) -> PyResult<PyObject> {
         let plist = PyList::empty(py);
-        for (pid, process) in self.sys.get_processes() {
+        for (pid, process) in self.sys.processes() {
             let pd = PyDict::new(py);
-            pd.set_item("pid", pid).unwrap();
+            pd.set_item("pid", pid.as_u32()).unwrap();
             pd.set_item("name", process.name()).unwrap();
             plist.append(pd).unwrap();
         }
