@@ -8,9 +8,10 @@ use std::collections::HashMap;
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
-use sysinfo::{NetworkExt, NetworksExt, ProcessExt, System, SystemExt};
+use sysinfo::{CpuExt, NetworkExt, NetworksExt, ProcessExt, System, SystemExt};
 // Exception when you try to add small numbers
 create_exception!(randomos, SmallNumberError, PyException);
+create_exception!(randomos, CPUError, PyException);
 
 /// Says hello to the name given and welcome to the city. Returns a string.
 /// Takes a dictrionary as argument.
@@ -51,6 +52,7 @@ fn read_file(py: Python, filename: String) -> PyResult<PyObject> {
 #[allow(dead_code)]
 #[pyclass]
 struct Rpath {
+    #[pyo3(get, set)]
     original_path: String,
 }
 
@@ -101,7 +103,12 @@ impl Ros {
     }
 
     fn number_of_processors(&mut self) -> PyResult<usize> {
-        Ok(self.sys.get_processors().len())
+        match self.sys.physical_core_count() {
+            Some(n) => {
+                return Ok(n);
+            }
+            None => return Err(CPUError::new_err("")),
+        }
     }
 }
 /// A Python module implemented in Rust with random OS things.
@@ -111,6 +118,7 @@ fn randomos(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(add_numbers, m)?)?;
     m.add_function(wrap_pyfunction!(read_file, m)?)?;
     m.add("SmallNumberError", _py.get_type::<SmallNumberError>())?;
+    m.add("CPUError", _py.get_type::<CPUError>())?;
     m.add_class::<Rpath>()?;
     m.add_class::<Ros>()?;
 

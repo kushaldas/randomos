@@ -16,7 +16,8 @@ name = "randomos"
 crate-type = ["cdylib"]
 
 [dependencies]
+<<<<<<< HEAD
 pyo3 = { version = "0.21.2", features = ["extension-module"] }
-sysinfo = "0.17.0"
+sysinfo = "0.29.10"
 
 
