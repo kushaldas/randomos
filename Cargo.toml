@@ -16,8 +16,5 @@ name = "randomos"
 crate-type = ["cdylib"]
 
 [dependencies]
-pyo3 = "0.18.3"
-
-[features]
-default = ["pyo3/extension-module"]
+pyo3 = { version = "0.21.2", features = ["extension-module"] }
 
