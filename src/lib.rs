@@ -8,9 +8,8 @@ fn hello() {
 
 /// A Python module implemented in Rust.
 #[pymodule]
-fn randomos(_py: Python, m: &PyModule) -> PyResult<()> {
-    m.add_function(wrap_pyfunction! (hello, m)?)?;
+fn randomos(m: &Bound<'_, PyModule>) -> PyResult<()> {
+    m.add_function(wrap_pyfunction!(hello, m)?)?;
 
     Ok(())
 }
-
