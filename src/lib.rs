@@ -43,11 +43,11 @@ fn read_file(py: Python, filename: String) -> PyResult<PyObject> {
 
 /// A Python module implemented in Rust with random OS things.
 #[pymodule]
-fn randomos(m: &Bound<'_, PyModule>) -> PyResult<()> {
+fn randomos(py: Python<'_>, m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(hello, m)?)?;
     m.add_function(wrap_pyfunction!(add_numbers, m)?)?;
     m.add_function(wrap_pyfunction!(read_file, m)?)?;
-    m.add("SmallNumberError", _py.get_type::<SmallNumberError>())?;
+    m.add("SmallNumberError", py.get_type_bound::<SmallNumberError>())?;
 
     Ok(())
 }
