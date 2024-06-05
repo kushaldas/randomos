@@ -116,9 +116,9 @@ impl Ros {
     }
 
     fn get_all_processes(&mut self, py: Python) -> PyResult<PyObject> {
-        let plist = PyList::empty(py);
+        let plist = PyList::empty_bound(py);
         for (pid, process) in self.sys.processes() {
-            let pd = PyDict::new(py);
+            let pd = PyDict::new_bound(py);
             pd.set_item("pid", pid.as_u32()).unwrap();
             pd.set_item("name", process.name()).unwrap();
             plist.append(pd).unwrap();

@@ -17,14 +17,6 @@ crate-type = ["cdylib"]
 
 [dependencies]
 pyo3 = { version = "0.21.2", features = ["extension-module"] }
-<<<<<<< HEAD
-<<<<<<< HEAD
 sysinfo = "0.29.10"
-=======
-sysinfo = "0.17.0"
->>>>>>> 16a20fa (Adds Ros class)
-=======
-sysinfo = "0.29.10"
->>>>>>> 15342e9 (Updates sysinfo crate)
 
 
