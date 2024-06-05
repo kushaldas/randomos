@@ -7,7 +7,7 @@ Visit [rustup](https://rustup.rs) site and install Rust on your system.
 ```sh
 python3 -m venv .venv
 source .venv/bin/activate
-python3 -m pip install --require-hashes -r requirements-dev.txt
+python3 -m pip install -r requirements.txt
 maturin develop
 ```
 
