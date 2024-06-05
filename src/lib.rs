@@ -45,7 +45,7 @@ fn read_file(py: Python, filename: String) -> PyResult<PyObject> {
     let mut file = File::open(filename).expect("no file found");
     let mut result = Vec::new();
     file.read_to_end(&mut result).unwrap();
-    let res = PyBytes::new(py, &result);
+    let res = PyBytes::new_bound(py, &result);
     Ok(res.into())
 }
 
@@ -115,9 +115,9 @@ impl Ros {
     }
 
     fn get_all_processes(&mut self, py: Python) -> PyResult<PyObject> {
-        let plist = PyList::empty(py);
+        let plist = PyList::empty_bound(py);
         for (pid, process) in self.sys.processes() {
-            let pd = PyDict::new(py);
+            let pd = PyDict::new_bound(py);
             pd.set_item("pid", pid.as_u32()).unwrap();
             pd.set_item("name", process.name()).unwrap();
             plist.append(pd).unwrap();
@@ -140,12 +140,12 @@ impl Ros {
 
 /// A Python module implemented in Rust with random OS things.
 #[pymodule]
-fn randomos(_py: Python, m: &PyModule) -> PyResult<()> {
+fn randomos(py: Python<'_>, m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(hello, m)?)?;
     m.add_function(wrap_pyfunction!(add_numbers, m)?)?;
     m.add_function(wrap_pyfunction!(read_file, m)?)?;
-    m.add("SmallNumberError", _py.get_type::<SmallNumberError>())?;
-    m.add("CPUError", _py.get_type::<CPUError>())?;
+    m.add("SmallNumberError", py.get_type_bound::<SmallNumberError>())?;
+    m.add("CPUError", py.get_type_bound::<CPUError>())?;
     m.add_class::<Rpath>()?;
     m.add_class::<Ros>()?;
 
